@@ -1,0 +1,311 @@
+ <link rel="preload" href="{{ "slick.css" | asset_url }}" as="style">
+ <link rel="preload" href="{{ "slick-theme.css" | asset_url }}" as="style">
+
+
+<div class="container">
+<div class="slider py-5">
+  {% assign desktop = section.settings.slidesdesktop %}
+  {% assign laptop = section.settings.slideslaptop %}
+  {% assign tab = section.settings.imgheighttab %} 
+  
+  
+  {% assign desktopimg = section.settings.imgheightdesktop %}
+  {% assign laptopimg = section.settings.imgheightlaptop %}
+  {% assign tabimg = section.settings.imgheighttab %}
+  
+  
+  {% for block in section.blocks %}
+  
+  {% assign image = block.settings.image %}
+  {% assign title = block.settings.title %}
+  {% assign url = block.settings.url %}
+  
+  {% if image != blank %}
+  <div class="p-2">
+    <div class="slides">
+    	 
+      	
+      	<img alt="" src="{{ image | img_url: '400x300'  }}" data-aspectratio="{{ image.aspect_ratio }}" class="w-100" data-src="{{ img_url }}">      
+      	<div class="slider-caption">
+          {% if title != blank %}
+          <h3>{{ title }}</h3>
+          {% endif %}
+          
+          {% if url != blank %}
+          <a class="btn-custom  " href="{{ url }}">View More</a>
+          {% endif %}
+      	</div>
+    </div>
+  </div>
+  {% endif %}
+  
+  {% endfor %}
+  
+ 
+</div>
+  
+</div>
+			
+
+{% schema %}
+  {
+    "name": "Slider Section",
+	"class":"slick-slider-section",
+    "settings": [
+		{
+			"type":"header",
+			"content":"Desktop View"  
+		},
+		{
+			"type":"range",
+			"label":"Slides for Desktop",
+			"id":"slidesdesktop",
+			"max":5,
+			"min":1,
+			"default":4
+		}, 
+		{
+			"type":"range",
+			"label":"Image Height",
+			"id":"imgheightdesktop",
+			"max":500,
+			"min":100,
+			"step":10,
+			"default":200
+		}, 
+		{
+			"type":"header",
+			"content":"Laptop View"  
+		},
+		{
+			"type":"range",
+			"label":"Slides for Laptop",
+			"id":"slideslaptop",
+			"max":5,
+			"min":1,
+			"default":3
+		},
+		{
+			"type":"range",
+			"label":"Image Height",
+			"id":"imgheightlaptop",
+			"max":450,
+			"min":150,
+			"step":10,
+			"default":200
+		}, 
+		{
+			"type":"header",
+			"content":"Tab View"  
+		},
+		{
+			"type":"range",
+			"label":"Slides for Tab",
+			"id":"slidestab",
+			"max":5,
+			"min":1,
+			"default":2
+		},
+		{
+			"type":"range",
+			"label":"Image Height",
+			"id":"imgheighttab",
+			"max":450,
+			"min":150,
+			"step":10,
+			"default":200
+		}
+	],
+	"blocks":[
+		{
+          "type":"image",
+          "name":"Slider",
+          "settings": [
+			
+			{
+				"type": "image_picker",
+				"id": "image",
+				"label": "Add Image"
+			},
+			{
+				"type": "text",
+				"id": "title",
+				"label": "Add Title"
+			},
+			{
+				"type": "url",
+				"id": "url",
+				"label": "Add Url"
+			}
+
+          ]
+		}
+		
+	],
+	"presets":[
+		{
+			"category":"Custom Slide",
+			"name":"Custom Slide" 
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
+
+ {{ "jquery-2.2.3.min.js" | asset_url | script_tag }}
+
+    <script src="{{ 'theme.min.js' | asset_url }}" defer="defer"></script>
+ <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+
+
+<script>
+
+$(".slider").slick({
+
+  // normal options...
+  infinite: true,
+   centerMode: true,
+  centerPadding: '60px',
+  
+  speed: 300,
+  slidesToShow: {{ desktop }},
+  slidesToScroll: 4,
+
+  // the magic
+  responsive: [{
+
+      breakpoint: 1200,
+      settings: {
+  slidesToShow: {{ laptop }} 
+      }
+
+    },   {
+
+      breakpoint: 767,
+      settings: {
+                   slidesToShow: {{ tab }} 
+      }
+
+    }, {
+
+      breakpoint:575,
+      settings: {
+        slidesToShow: 1 
+      }
+
+    }]
+});
+
+	
+</script>
+<style>
+ .slider .slick-arrow { 
+    border: 1px solid #260759; 
+    background-color: #260759; 
+    color: #fff; 
+    height: 30px;
+    width: 30px;
+    line-height: 30px; 
+}
+  
+  .slider  .slick-arrow:not(.disabled):not([disabled]):focus, .slider .slick-arrow:not(.disabled):not([disabled]):hover {
+    opacity: 1;
+    color: #fff;
+    background-color: #541cb100;
+    border-color: #ffffff;
+    -webkit-box-shadow: 0 0 0 .2rem #ccc;
+    -moz-box-shadow: 0 0 0 .2rem #ccc;
+    -ms-box-shadow: 0 0 0 .2rem #ccc;
+    -o-box-shadow: 0 0 0 .2rem #ccc;
+    box-shadow: 0 0 0 0 #ccc0;
+}
+  
+  .slider .slick-prev {
+    left: -30px;
+    transition:all 0.3s linear;
+}
+  .slider .slick-next {
+    right: -30px;
+    transition:all 0.3s linear;
+}
+  
+  
+  .slider.slick-slider:hover .slick-prev{
+  	left:15px;
+  }
+  .slider.slick-slider:hover .slick-next{
+  	right:15px;
+  }
+  
+  .slider.slick-slider {
+    
+    overflow: inherit !important;
+}
+  .slides{
+  	
+    position:relative;
+  
+  }
+  .slider-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+}
+ .slider-caption h3 {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 400;
+}
+ 
+  .slider-caption .btn-custom {
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    border: 1px solid;
+    padding: 5px 22px;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.slider-caption:hover .btn-custom {
+    color: #fff;
+    text-decoration: none;
+    background-color: #260759;
+    opacity: 1;
+    border-color: #260759;
+}
+  .slider.slick-slider img {
+    display: block;
+    height:{{ desktopimg }}px;
+    object-fit: cover;
+}
+  
+  
+  @media(max-width: 1200px){
+  	.slider.slick-slider img {
+      height: {{ laptopimg }}px;
+    }
+  
+  }
+  
+  @media(max-width:767px){
+  	.slider.slick-slider img {
+      height: {{ tabimg }}px;
+    }
+  
+  }
+  @media(max-width:575px){
+  	.slider.slick-slider img {
+      height:auto;
+    }
+  
+  }
+  
+ </style>
